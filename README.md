@@ -38,4 +38,20 @@ cd ~/use-case-src/
 deploy/java8.sh
 ```
 
+### Instalar Storm
+Ejecutar el siguiente script:
+```bash
+cd ~/use-case-src/
+deploy/storm.sh
+```
+
+### Instalar Beanstalkd
+Ejecutar el siguiente script:
+```bash
+cd ~/use-case-src/
+deploy/beanstalkd.sh
+```
+
+
+
 
