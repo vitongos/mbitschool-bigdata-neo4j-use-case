@@ -9,12 +9,12 @@ public class MyTopology {
 	{
 		TopologyBuilder builder = new TopologyBuilder();
 
-		builder.setSpout("pairs", new PairSpout(5000), 1);        
-		builder.setBolt("count", new MyBolt(), 1)
+		builder.setSpout("pairs", new PairSpout(5000), 4);        
+		builder.setBolt("count", new MyBolt(), 2)
 		        .shuffleGrouping("pairs");
 
 		Config conf = new Config();
-		conf.setDebug(true);
+		conf.setDebug(false);
 		conf.setNumWorkers(2);
 
 		final LocalCluster cluster = new LocalCluster();

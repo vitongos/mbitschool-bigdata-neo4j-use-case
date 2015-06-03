@@ -15,7 +15,7 @@ import backtype.storm.tuple.*;
 public class PairSpout extends BaseRichSpout{
 	private static final long serialVersionUID = 1L;
 	
-    static SpoutOutputCollector _collector;
+    private SpoutOutputCollector collector;
     static Socket clientSocket;
     static Socket serverSocket;
     static int port;
@@ -28,7 +28,7 @@ public class PairSpout extends BaseRichSpout{
 
     @SuppressWarnings("rawtypes")
 	public void open(Map conf, TopologyContext context, SpoutOutputCollector collector){
-    	_collector = collector;
+    	this.collector = collector;
 	    try {
 	    	clientSocket = new Socket();
             try {
@@ -50,7 +50,7 @@ public class PairSpout extends BaseRichSpout{
     	   List<Values> values = parseInput(b);
     	   for (Values value: values)
     	   {
-    		   _collector.emit(value);
+    		   this.collector.emit(value);
     	   }
 		} catch (IOException e) {
 			e.printStackTrace();
