@@ -4,18 +4,23 @@ import backtype.storm.Config;
 import backtype.storm.LocalCluster;
 import backtype.storm.topology.TopologyBuilder;
 
-public class MyTopology {
+public class MyTopology 
+{
+	public static final Integer SPOUTS = 1; // 20
+	public static final Integer BOLTS = 1; // 8
+	public static final Integer WORKERS = 2; // 4
+	
 	public static void main(String[] args)
 	{
 		TopologyBuilder builder = new TopologyBuilder();
 
-		builder.setSpout("pairs", new PairSpout(5000), 4);        
-		builder.setBolt("count", new MyBolt(), 2)
+		builder.setSpout("pairs", new PairSpout(5000), SPOUTS);        
+		builder.setBolt("count", new CounterBolt(), BOLTS)
 		        .shuffleGrouping("pairs");
 
 		Config conf = new Config();
 		conf.setDebug(false);
-		conf.setNumWorkers(2);
+		conf.setNumWorkers( WORKERS );
 
 		final LocalCluster cluster = new LocalCluster();
 		cluster.submitTopology("test", conf, builder.createTopology());

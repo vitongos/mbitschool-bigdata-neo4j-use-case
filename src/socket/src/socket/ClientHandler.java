@@ -7,6 +7,7 @@ import java.util.Random;
 public class ClientHandler extends Thread
 {
 	private Socket conn;
+	private long processed = 0;
     
 	ClientHandler(Socket conn)
     {
@@ -31,7 +32,12 @@ public class ClientHandler extends Thread
 	        	if (i != j) 
 	        	{
 	        		String tuple = i + "," + j;
+	        		processed++;
 	        		out.println(tuple);
+	        	}
+	        	if (processed > 0 && processed % 1000000 == 0)
+	        	{
+	        		System.out.println("Clicks procesados en este hilo: " + processed/1000000 + " millones");
 	        	}
 	        }
 	        
