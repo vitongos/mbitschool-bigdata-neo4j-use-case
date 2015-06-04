@@ -46,6 +46,13 @@ cd ~/use-case-src/
 deploy/beanstalkd.sh
 ```
 
+### Instalar Memcached
+Ejecutar el siguiente script:
+```bash
+cd ~/use-case-src/
+deploy/memcached.sh
+```
+
 ### Instalar Neo4j
 Ejecutar el siguente script:
 ```bash
