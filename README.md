@@ -23,7 +23,7 @@ Ejecutar el siguiente script:
 cd ~/use-case-src/
 deploy/java8.sh
 ```
-Ante el mensaje *Enter to keep the current selection[+], or type selection number:* seleccionar la opción del **jdk1.8.0_45**.
+Ante el mensaje *Enter to keep the current selection[+], or type selection number:* seleccionar la opción del **jdk1.8.0_65**.
 
 ### Instalar Eclipse
 Ejecutar el siguiente script:
