@@ -6,6 +6,8 @@ Instalación
 
 A continuación se especifica el proceso de instalación de los diferentes sistemas necesarios para ejecutar las demos.
 
+*Importante: ejecutar la máquina virtual con 8 GB de RAM*
+
 ### Instalar el repositorio clonándolo de Github:
 Ejecutar el siguiente script:
 ```bash
@@ -54,12 +56,34 @@ deploy/memcached.sh
 ```
 
 ### Instalar Neo4j
-Ejecutar el siguente script:
+Ejecutar el siguiente script:
 ```bash
 cd ~/use-case-src/
 deploy/neo4j.sh
 ```
 
+### Ejecutar los proyectos
+Ejecutar el Eclipse desde una consola:
+```bash
+eclipse &
+```
 
+Importar al Eclipse los 5 proyectos dentro del directorio **src**.
 
+Configurar el Build Path de cada proyecto para que apunte al JRE de Java 8: */usr/local/java/jdk1.8.0_65/*.
+
+Compilar el cliente de beanstalkd sin ejecutar los tests:
+- Clic derecho en **com.dinstone.beanstalkc**
+- *Run as... > Maven build...*
+- Como *Goals* indicar *clean install*
+- Marcar el checkbox *Skip Tests*
+- Run
+
+A continuación, compilar los otros cuatro proyectos.
+
+Ejecutar los proyectos en el siguiente orden:
+- **socket**: habilita un socket para que escuche el storm y comience a enviar tuplas
+- **beanstalk**: es el worker que consumirá los datos procesados, puede ejecutarse múltiples veces si se quiere que se consuman más rápido
+- **spark**: levanta el servidor Web que presentará la simulación
+- **storm**: ejecutando la topología se comienzan a consumir tuplas desencadenando todo el proceso
 
