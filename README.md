@@ -18,14 +18,14 @@ chmod +x use-case-src/deploy/*.sh
 ```
 
 ### Instalar Java 8
-Descargar [Java 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
+Descargar [Java 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) la versión 8u92.
 
 Ejecutar el siguiente script:
 ```bash
 cd ~/use-case-src/
 deploy/java8.sh
 ```
-Ante el mensaje *Enter to keep the current selection[+], or type selection number:* seleccionar la opción del **jdk1.8.0_65**.
+Ante el mensaje *Enter to keep the current selection[+], or type selection number:* seleccionar la opción del **jdk1.8.0_92**.
 
 ### Instalar Eclipse
 Ejecutar el siguiente script:
@@ -70,7 +70,7 @@ eclipse &
 
 Importar al Eclipse los 5 proyectos dentro del directorio **src**.
 
-Configurar el Build Path de cada proyecto para que apunte al JRE de Java 8: */usr/local/java/jdk1.8.0_65/*.
+Configurar el Build Path de cada proyecto para que apunte al JRE de Java 8: */usr/local/java/jdk1.8.0_92/*.
 
 Compilar el cliente de beanstalkd sin ejecutar los tests:
 - Clic derecho en **com.dinstone.beanstalkc**
