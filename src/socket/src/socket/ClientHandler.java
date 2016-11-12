@@ -8,6 +8,8 @@ public class ClientHandler extends Thread
 {
 	private Socket conn;
 	private long processed = 0;
+	private static int MIN = 1;
+	private static int MAX = 100;
     
 	ClientHandler(Socket conn)
     {
@@ -22,22 +24,19 @@ public class ClientHandler extends Thread
 	        out.flush();
 	        
 	        Random rand = new Random();
-	        int min = 1;
-	        int max = 20;
 	
 	        while (!conn.isInputShutdown()) 
 	        {
-	        	int i = rand.nextInt((max - min) + 1) + min;
-	        	int j = rand.nextInt((max - min) + 1) + min;          
+	        	int i = rand.nextInt((MAX - MIN) + 1) + MIN;
+	        	int j = rand.nextInt((MAX - MIN) + 1) + MIN;          
 	        	if (i != j) 
 	        	{
-	        		String tuple = i + "," + j;
+	        		generateEvent(out, rand, i, j);
 	        		processed++;
-	        		out.println(tuple);
 	        	}
-	        	if (processed > 0 && processed % 1000000 == 0)
+	        	if (processed > 0 && processed % 100000 == 0)
 	        	{
-	        		System.out.println("Clicks procesados en este hilo: " + processed/1000000 + " millones");
+	        		System.out.println("Eventos procesados en este hilo: " + processed/1000 + "k");
 	        	}
 	        }
 	        
@@ -52,6 +51,40 @@ public class ClientHandler extends Thread
         } catch(IOException e) {
         	System.err.println("Connection error. IOexception");
             e.printStackTrace();
-        }
+		}
+	}
+	
+	private void generateEvent(PrintStream out, Random rand, int i, int j)
+	{
+		String tuple = "";
+		int r = rand.nextInt(10000);
+		if (r % 67 == 0)
+		{
+			tuple = generateClick(i, j);
+		} 
+		else if (r <= 3)
+		{
+			tuple = generateInstall(i, j);
+		}
+		else
+		{
+			tuple = generatePrint(i, j);
+		}
+		out.println(tuple);
+	}
+	
+	private String generatePrint(int i, int j)
+	{
+		return "p," + i + "," + j;
+	}
+	
+	private String generateClick(int i, int j)
+	{
+		return "c," + i + "," + j;
+	}
+	
+	private String generateInstall(int i, int j)
+	{
+		return "i," + i + "," + j;
 	}
 }
