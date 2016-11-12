@@ -7,7 +7,7 @@ Instalación
 A continuación se especifica el proceso de instalación de los diferentes sistemas necesarios para ejecutar las demos en Centos 7.
 Ejecutar los scripts bajo usuario root.
 
-*Importante: ejecutar la máquina virtual con 8 GB de RAM*
+*Importante: ejecutar la máquina virtual con mínimo 4 GB de RAM, 8 GB recomendados*
 
 ### Instalar el repositorio clonándolo de Github:
 Ejecutar el siguiente script bajo:
