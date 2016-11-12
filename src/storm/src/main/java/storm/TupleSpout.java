@@ -69,7 +69,7 @@ public class TupleSpout extends BaseRichSpout
     	for (String s: tuples)
     	{
     		String[] pair = s.split(",");
-	    	if (pair.length == 3)
+	    	if ((pair.length == 3) && (pair[0].equals("p") || pair[0].equals("c") || pair[0].equals("i")))
 	    	{
 	    		try {
 	    			values.add(new Values(pair[0], Integer.parseInt(pair[1]), Integer.parseInt(pair[2])));

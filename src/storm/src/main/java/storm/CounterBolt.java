@@ -106,46 +106,6 @@ public class CounterBolt extends BaseRichBolt
     	}
     }
     
-//    private String exportToJson()
-//    {
-//    	StringBuilder stringBuilder = new StringBuilder();
-//    	for (Integer source: this.counter.keySet())
-//    	{
-//    		if (stringBuilder.length() == 0)
-//    		{
-//    			stringBuilder.append("{");
-//    		}
-//    		else
-//    		{
-//    			stringBuilder.append(",");
-//    		}
-//    		stringBuilder.append("\""); stringBuilder.append(source.toString()); stringBuilder.append("\"");
-//    		stringBuilder.append(":"); stringBuilder.append(exportSourceToJson(this.counter.get(source)));
-//    	}
-//    	stringBuilder.append("}");
-//    	return stringBuilder.toString();
-//    }
-//    
-//    private String exportSourceToJson(Map<Integer, Integer> counter)
-//    {
-//    	StringBuilder stringBuilder = new StringBuilder();
-//    	for (Integer target: counter.keySet())
-//    	{
-//    		if (stringBuilder.length() == 0)
-//    		{
-//    			stringBuilder.append("{");
-//    		}
-//    		else
-//    		{
-//    			stringBuilder.append(",");
-//    		}
-//    		stringBuilder.append("\""); stringBuilder.append(target.toString()); stringBuilder.append("\"");
-//    		stringBuilder.append(":"); stringBuilder.append(counter.get(target).toString());
-//    	}
-//    	stringBuilder.append("}");
-//    	return stringBuilder.toString();
-//    }
-
     public void declareOutputFields(OutputFieldsDeclarer declarer) 
     {
         declarer.declare(new Fields("word"));
