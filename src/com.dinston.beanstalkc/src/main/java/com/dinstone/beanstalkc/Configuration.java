@@ -530,7 +530,7 @@ public class Configuration {
      * @see Configuration#jobMaxSize
      */
     public int getJobMaxSize() {
-        return getInt(JOB_MAXSIZE, 65536);
+        return getInt(JOB_MAXSIZE, 1024000);
     }
 
     /**

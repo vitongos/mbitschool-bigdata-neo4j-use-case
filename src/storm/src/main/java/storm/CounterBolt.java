@@ -15,11 +15,12 @@ import backtype.storm.topology.base.BaseRichBolt;
 import backtype.storm.tuple.Fields;
 import backtype.storm.tuple.Tuple;
 
-public class CounterBolt extends BaseRichBolt {
+public class CounterBolt extends BaseRichBolt 
+{
 	private static final long serialVersionUID = 1L;
-	private static final long REPORT_BOUND = 5000000; 
+	private static final long REPORT_BOUND = 500000; 
 	private OutputCollector collector;
-	private HashMap<Integer, HashMap<Integer, Integer>> counter;
+	private HashMap<Integer, HashMap<Integer, HashMap<String, Integer>>> counter;
 	private Integer reporting = 0;
 	JobProducer producer;
 
@@ -34,17 +35,18 @@ public class CounterBolt extends BaseRichBolt {
 	    BeanstalkClientFactory factory = new BeanstalkClientFactory(config);
 	    this.producer = factory.createJobProducer("count-tube");
 	    
-		this.counter = new HashMap<Integer, HashMap<Integer, Integer>>();
+		this.counter = new HashMap<Integer, HashMap<Integer, HashMap<String, Integer>>>();
         this.collector = collector;
     }
 
     public void execute(Tuple tuple) 
     {
-    	Integer source = tuple.getInteger(0);
-    	Integer target = tuple.getInteger(1);
+    	String event = tuple.getString(0);
+    	Integer source = tuple.getInteger(1);
+    	Integer target = tuple.getInteger(2);
     	if (source > 0 && target > 0 && source != target)
     	{
-    		countTuple(source, target);
+    		countTuple(event, source, target);
     	}
     	if (isReporting())
     	{
@@ -58,7 +60,6 @@ public class CounterBolt extends BaseRichBolt {
     
     public void cleanup() 
     {
-//    	String json = exportToJson();
     	Gson gson = new Gson();
     	String json = gson.toJson(this.counter);
     	producer.putJob(0, 0, 0, json.getBytes());
@@ -68,32 +69,40 @@ public class CounterBolt extends BaseRichBolt {
     
     private boolean isReporting()
     {
-    	boolean result = reporting > REPORT_BOUND;
-    	if (result)
+    	if (reporting++ > REPORT_BOUND)
     	{
     		reporting = 0;
+    		return true;
     	}
-    	else
-    	{
-    		reporting += 1;
-    	}
-    	return result;
+    	return false;
     }
     
-    private void countTuple(Integer source, Integer target)
+    private void countTuple(String event, Integer source, Integer target)
     {
     	if (!this.counter.containsKey(source))
     	{
-    		this.counter.put(source, new HashMap<Integer, Integer>());
+    		this.counter.put(source, new HashMap<Integer, HashMap<String, Integer>>());
     	}
-    	Map<Integer, Integer> sourceCount = this.counter.get(source);
-    	if (!sourceCount.containsKey(target))
+    	HashMap<Integer, HashMap<String, Integer>> sourcesCount = this.counter.get(source);
+    	HashMap<String, Integer> eventCount = null;
+    	if (!sourcesCount.containsKey(target))
     	{
-    		sourceCount.put(target, 1);
+    		eventCount = new HashMap<String, Integer>();
+    		eventCount.put(event, 1);
+    		sourcesCount.put(target, eventCount);
     	}
     	else
     	{
-    		sourceCount.put(target, sourceCount.get(target) + 1);
+    		eventCount = sourcesCount.get(target);
+    		if (!eventCount.containsKey(event))
+    		{
+    			eventCount.put(event, 1);
+    		}
+    		else
+    		{
+    			eventCount.put(event, eventCount.get(event) + 1);
+    		}
+    		sourcesCount.put(target, eventCount);
     	}
     }
     

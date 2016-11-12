@@ -14,9 +14,9 @@ public class MyTopology
 	{
 		TopologyBuilder builder = new TopologyBuilder();
 
-		builder.setSpout("pairs", new PairSpout(5000), SPOUTS);        
+		builder.setSpout("tuples", new TupleSpout(5000), SPOUTS);        
 		builder.setBolt("count", new CounterBolt(), BOLTS)
-		        .shuffleGrouping("pairs");
+		        .shuffleGrouping("tuples");
 
 		Config conf = new Config();
 		conf.setDebug(false);

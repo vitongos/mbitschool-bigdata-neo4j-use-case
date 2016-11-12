@@ -12,7 +12,8 @@ import backtype.storm.topology.OutputFieldsDeclarer;
 import backtype.storm.topology.base.BaseRichSpout;
 import backtype.storm.tuple.*;
 
-public class PairSpout extends BaseRichSpout{
+public class TupleSpout extends BaseRichSpout
+{
 	private static final long serialVersionUID = 1L;
 	
     private SpoutOutputCollector collector;
@@ -21,13 +22,15 @@ public class PairSpout extends BaseRichSpout{
     static int port;
     static String host;
 
-    public PairSpout(int p){
+    public TupleSpout(int p)
+    {
     	port = p;
     	host = "localhost";
     }
 
     @SuppressWarnings("rawtypes")
-	public void open(Map conf, TopologyContext context, SpoutOutputCollector collector){
+	public void open(Map conf, TopologyContext context, SpoutOutputCollector collector)
+    {
     	this.collector = collector;
 	    try {
 	    	clientSocket = new Socket();
@@ -42,7 +45,8 @@ public class PairSpout extends BaseRichSpout{
 		}
     }   
 
-    public void nextTuple() {
+    public void nextTuple()
+    {
     	try {
     	   InputStream inputStream = clientSocket.getInputStream();
     	   byte[] b = new byte[4096];
@@ -65,10 +69,10 @@ public class PairSpout extends BaseRichSpout{
     	for (String s: tuples)
     	{
     		String[] pair = s.split(",");
-	    	if (pair.length == 2)
+	    	if (pair.length == 3)
 	    	{
 	    		try {
-	    			values.add(new Values(Integer.parseInt(pair[0]), Integer.parseInt(pair[1])));
+	    			values.add(new Values(pair[0], Integer.parseInt(pair[1]), Integer.parseInt(pair[2])));
 	    		} catch (NumberFormatException e) { 
 	    			// do nothing
 	    		}
@@ -78,6 +82,6 @@ public class PairSpout extends BaseRichSpout{
     }
 
 	public void declareOutputFields(OutputFieldsDeclarer declarer) {
-		declarer.declare(new Fields("source", "target"));
+		declarer.declare(new Fields("event", "source", "target"));
 	}
 }

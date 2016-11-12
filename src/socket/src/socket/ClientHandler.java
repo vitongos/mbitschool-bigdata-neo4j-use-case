@@ -23,8 +23,9 @@ public class ClientHandler extends Thread
 	        out = new PrintStream(conn.getOutputStream());
 	        out.flush();
 	        
+	        long timeStart = System.currentTimeMillis();
+	        long timeEnd;
 	        Random rand = new Random();
-	
 	        while (!conn.isInputShutdown()) 
 	        {
 	        	int i = rand.nextInt((MAX - MIN) + 1) + MIN;
@@ -36,7 +37,10 @@ public class ClientHandler extends Thread
 	        	}
 	        	if (processed > 0 && processed % 100000 == 0)
 	        	{
+	        		timeEnd = System.currentTimeMillis();
 	        		System.out.println("Eventos procesados en este hilo: " + processed/1000 + "k");
+	        		System.out.println("Últimos 100k tomaron: " + (timeEnd - timeStart) + " ms");
+	        		timeStart = timeEnd;
 	        	}
 	        }
 	        
@@ -49,7 +53,7 @@ public class ClientHandler extends Thread
 	            ioException.printStackTrace();
 	        }
         } catch(IOException e) {
-        	System.err.println("Connection error. IOexception");
+        	System.err.println("Connection error");
             e.printStackTrace();
 		}
 	}
