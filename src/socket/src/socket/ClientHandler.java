@@ -38,8 +38,8 @@ public class ClientHandler extends Thread
 	        	if (processed > 0 && processed % 100000 == 0)
 	        	{
 	        		timeEnd = System.currentTimeMillis();
-	        		System.out.println("Eventos procesados en este hilo: " + processed/1000 + "k");
-	        		System.out.println("Últimos 100k tomaron: " + (timeEnd - timeStart) + " ms");
+	        		System.out.println("Eventos procesados en este hilo: " + (processed/1000000f) + "M");
+	        		System.out.println("Últimos 100k tomaron: " + ((timeEnd - timeStart)/1000f) + " seg");
 	        		timeStart = timeEnd;
 	        	}
 	        }

@@ -10,7 +10,7 @@ public class MainClass {
 		Socket conn = null;
         try {
             s = new ServerSocket(5000 , 10);
-            echo("Server socket created.Waiting for connection...");
+            echo("Server socket created. Waiting for connection...");
             while (true)
             {
                 conn = s.accept();
