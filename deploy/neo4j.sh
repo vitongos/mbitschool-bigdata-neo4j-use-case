@@ -31,4 +31,4 @@ systemctl enable neo4j.service
 service neo4j start
 
 cd ~/use-case-src/
-/opt/neo4j/bin/neo4j-shell -file data/insert.cyp
+/opt/neo4j-community-3.0.6/bin/neo4j-shell -file data/insert.cyp
