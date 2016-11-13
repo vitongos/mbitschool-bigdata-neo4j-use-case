@@ -78,14 +78,37 @@ Compilar el cliente de beanstalkd sin ejecutar los tests:
 - Clic derecho en **com.dinstone.beanstalkc**
 - *Run as... > Maven build...*
 - Marcar el checkbox *Skip Tests*
-- Como *Goals* indicar *clean install*
+- Como *Goals* indicar *clean install package*
 - Run
 
-A continuación, compilar los otros cuatro proyectos.
+A continuación, compilar los otros cuatro proyectos:
+- *Run as... > Maven build...*
+- Como *Goals* indicar *clean install package*
+- Run
+
+
+### Ejecutar los proyectos desde Eclipse
 
 Ejecutar los proyectos en el siguiente orden:
 - **socket**: habilita un socket para que escuche el storm y comience a enviar tuplas
 - **beanstalk**: es el worker que consumirá los datos procesados, puede ejecutarse múltiples veces si se quiere que se consuman más rápido
 - **spark**: levanta el servidor Web que presentará la simulación
 - **storm**: ejecutando la topología se comienzan a consumir tuplas desencadenando todo el proceso
+
+### Ejecutar los proyectos desde consola de comandos
+
+Copiar el jar del cliente de Beanstalkd al directorio de librerías de Storm y ejecutar los proyectos desde 4 consolas de comandos:
+```bash
+cd ~/use-case-src/
+cp src/com.dinston.beanstalkc/target/beanstalk-client-2.1.0-jar-with-dependencies.jar  /opt/storm/lib/
+
+java -cp src/socket/bin socket.MainClass
+
+java -jar src/worker/target/beanstalk-0.0.1-SNAPSHOT-jar-with-dependencies.jar
+
+java -jar src/spark/target/spark-0.0.1-SNAPSHOT-jar-with-dependencies.jar
+
+storm jar src/storm/target/storm-0.0.1-SNAPSHOT.jar storm.MyTopology
+```
+
 
