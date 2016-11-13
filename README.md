@@ -64,7 +64,7 @@ cd ~/use-case-src/
 deploy/neo4j.sh
 ```
 
-### Ejecutar los proyectos
+### Compilar los proyectos
 Ejecutar el Eclipse desde una consola:
 ```bash
 eclipse &
