@@ -3,6 +3,36 @@
   <groupId>worker</groupId>
   <artifactId>beanstalk</artifactId>
   <version>0.0.1-SNAPSHOT</version>
+  <build>
+    <plugins>
+      <plugin>
+  			<groupId>org.apache.maven.plugins</groupId>
+  			<artifactId>maven-assembly-plugin</artifactId>
+  			<executions>
+    			<execution>
+      				<id>create-my-bundle</id>
+      				<phase>package</phase>
+      				<goals>
+        				<goal>single</goal>
+      				</goals>
+      				<configuration>
+        				<descriptorRefs>
+          					<descriptorRef>jar-with-dependencies</descriptorRef>
+        				</descriptorRefs>
+				    </configuration>
+    			</execution>
+  			</executions>
+  			<configuration>
+          		<archive>
+            		<manifest>
+              			<addClasspath>true</addClasspath>
+              			<mainClass>beanstalk.Worker</mainClass>
+            		</manifest>
+          		</archive>
+        	</configuration>
+		</plugin>
+    </plugins>
+  </build>
   <dependencies>
 	  <dependency>
 		  <groupId>com.dinstone.beanstalkc</groupId>

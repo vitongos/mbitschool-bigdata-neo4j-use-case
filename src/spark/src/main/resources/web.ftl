@@ -18,7 +18,7 @@
 			a {
 				color: white;
 				text-decoration: none;
-				cursor: auto;
+				cursor: cursor;
 			}
 			.circular2 {
 				width: 36.0rem;
