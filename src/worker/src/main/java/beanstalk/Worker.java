@@ -26,11 +26,14 @@ public class Worker
 	    JobConsumer consumer = factory.createJobConsumer("count-tube");
 
 	    Job job = consumer.reserveJob(0);
+	    System.out.println("Job Reserved");
 	    Type counterType = new TypeToken<HashMap<Integer, HashMap<Integer, HashMap<String, Integer>>>>() {}.getType();
 	    while (job != null) {
+	    	System.out.println("Consuming Job");
 	    	byte[] bytes = job.getData();
 		    String s = new String(bytes, StandardCharsets.UTF_8);
 		    consumer.deleteJob(job.getId());
+		    System.out.println("Job Deleted");
 		    
 		    Gson gson = new Gson();
 		    HashMap<Integer, HashMap<Integer, HashMap<String, Integer>>> counterCollection = gson.fromJson(s, counterType);
@@ -40,6 +43,7 @@ public class Worker
 		    	try {
 		    		Driver driver = GraphDatabase.driver( "bolt://localhost" );
 		    		Session session = driver.session();
+		    	    System.out.println("Neo4j Session opened");
 				    for (Entry<Integer, HashMap<Integer, HashMap<String, Integer>>> sourceEntry: counterCollection.entrySet())
 			    	{
 				    	Integer source = sourceEntry.getKey();
@@ -50,14 +54,18 @@ public class Worker
 				    		incrementCounter(source, target, count, session);
 				    	}
 			    	}
+		    	    System.out.println("Neo4j Close session");
 				    session.close();
-		    		driver.close();
+		    	    System.out.println("Neo4j Session closed");
+				    driver.close();
 		    	} catch (Exception e) {
 		    		e.printStackTrace();
 		    	}
 		    	
 		    }
+		    System.out.println("Reserving Job");
 			job = consumer.reserveJob(0);
+		    System.out.println("Job Reserved");
 	    }
 	    consumer.close();
 	    System.out.println("Terminated");
@@ -89,7 +97,7 @@ public class Worker
 		if (sb.length() > 0) {
 			String query = "MATCH (n:APP { id : " + source + " })-[r]->(m:APP { id : " + target + " }) SET " + sb.toString();
 			session.run(query);
-			System.out.println("Updated data between App" + source + " and App" + target);
+			System.out.println("-- Updated data between App" + source + " and App" + target);
 		}
 	}
 }
