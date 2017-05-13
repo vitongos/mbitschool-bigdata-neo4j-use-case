@@ -20,14 +20,11 @@ chown centos:centos /opt -R
 ```
 
 ### Instalar Java 8
-Descargar [Java 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) la versión 8u112.
-
 Ejecutar el siguiente script:
 ```bash
 cd ~/use-case-src/
 deploy/java8.sh
 ```
-Ante el mensaje *Enter to keep the current selection[+], or type selection number:* seleccionar la opción del **jdk1.8.0_112**.
 
 ### Instalar Eclipse
 Ejecutar el siguiente script:
