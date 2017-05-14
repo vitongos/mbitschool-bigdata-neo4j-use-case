@@ -86,11 +86,12 @@ A continuación, compilar los proyectos **beanstalk**, **spark**, **storm**:
 
 ### Ejecutar los proyectos desde Eclipse
 
-Ejecutar los proyectos en el siguiente orden:
-- **socket**: habilita un socket para que escuche el storm y comience a enviar tuplas
-- **beanstalk**: es el worker que consumirá los datos procesados, puede ejecutarse múltiples veces si se quiere que se consuman más rápido
-- **spark**: levanta el servidor Web que presentará la simulación
-- **storm**: ejecutando la topología se comienzan a consumir tuplas desencadenando todo el proceso
+Ejecutar los proyectos como Java Application en el siguiente orden:
+- **socket**: habilita un socket para que escuche el storm y comience a enviar tuplas (clase *MainClass*)
+- **beanstalk**: es el worker que consumirá los datos procesados, puede ejecutarse múltiples veces si se quiere que se consuman más rápido (clase *Worker*)
+- **spark**: levanta el servidor Web que presentará la simulación (clase *AppController*)
+- **storm**: ejecutando la topología se comienzan a consumir tuplas desencadenando todo el proceso (clase *MyTopology*)
+
 
 ### Ejecutar los proyectos desde consola de comandos
 
