@@ -26,52 +26,57 @@ public class Worker
 	    JobConsumer consumer = factory.createJobConsumer("count-tube");
 
 	    Job job = consumer.reserveJob(0);
-	    System.out.println("Job Reserved");
+	    // System.out.println("Job Reserved");
 	    Type counterType = new TypeToken<HashMap<Integer, HashMap<Integer, HashMap<String, Integer>>>>() {}.getType();
 	    while (job != null) {
+	    	long startTime = System.nanoTime();
 	    	System.out.println("Consuming Job");
 	    	byte[] bytes = job.getData();
 		    String s = new String(bytes, StandardCharsets.UTF_8);
 		    consumer.deleteJob(job.getId());
-		    System.out.println("Job Deleted");
+		    // System.out.println("Job Deleted");
 		    
 		    Gson gson = new Gson();
 		    HashMap<Integer, HashMap<Integer, HashMap<String, Integer>>> counterCollection = gson.fromJson(s, counterType);
 		    
+    	    Integer i = 0;
 		    if (counterCollection.size() > 0)
 		    {
-		    	try {
-		    		Driver driver = GraphDatabase.driver( "bolt://localhost" );
-		    		Session session = driver.session();
-		    	    System.out.println("Neo4j Session opened");
-				    for (Entry<Integer, HashMap<Integer, HashMap<String, Integer>>> sourceEntry: counterCollection.entrySet())
-			    	{
-				    	Integer source = sourceEntry.getKey();
-				    	for (Entry<Integer, HashMap<String, Integer>> targetEntry: sourceEntry.getValue().entrySet())
+		    	Driver driver = GraphDatabase.driver( "bolt://localhost" );
+		    	try (Session session = driver.session())
+		        {
+		            // Wrapping Cypher in an explicit transaction provides atomicity
+		            // and makes handling errors much easier.
+		            try (Transaction tx = session.beginTransaction())
+		            {
+		            	for (Entry<Integer, HashMap<Integer, HashMap<String, Integer>>> sourceEntry: counterCollection.entrySet())
 				    	{
-				    		Integer target = targetEntry.getKey();
-				    		HashMap<String, Integer> count = targetEntry.getValue();
-				    		incrementCounter(source, target, count, session);
+					    	Integer source = sourceEntry.getKey();
+					    	for (Entry<Integer, HashMap<String, Integer>> targetEntry: sourceEntry.getValue().entrySet())
+					    	{
+					    		Integer target = targetEntry.getKey();
+					    		HashMap<String, Integer> count = targetEntry.getValue();
+					    		incrementCounter(source, target, count, tx);
+					    		i++;
+					    	}
 				    	}
-			    	}
-		    	    System.out.println("Neo4j Close session");
-				    session.close();
-		    	    System.out.println("Neo4j Session closed");
-				    driver.close();
-		    	} catch (Exception e) {
-		    		e.printStackTrace();
-		    	}
-		    	
+		                tx.success();
+		            }
+		        }
+		    	driver.close();
 		    }
-		    System.out.println("Reserving Job");
+		    System.out.println("Updated " + i + " tuples in Neo4j");
+		    long elapsedTime = System.nanoTime() - startTime;
+		    System.out.println("Job Processed in " + elapsedTime/1000000000 + " seconds");
+		    // System.out.println("Reserving Job");
 			job = consumer.reserveJob(0);
-		    System.out.println("Job Reserved");
+		    // System.out.println("Job Reserved");
 	    }
 	    consumer.close();
 	    System.out.println("Terminated");
 	}
 	
-	private static void incrementCounter(Integer source, Integer target, HashMap<String, Integer> count, Session session)
+	private static void incrementCounter(Integer source, Integer target, HashMap<String, Integer> count, Transaction transaction)
 	{
 		StringBuilder sb = new StringBuilder();
 		for (Entry<String, Integer> targetEntry: count.entrySet())
@@ -95,9 +100,8 @@ public class Worker
     		}
     	}
 		if (sb.length() > 0) {
-			String query = "MATCH (n:APP { id : " + source + " })-[r]->(m:APP { id : " + target + " }) SET " + sb.toString();
-			session.run(query);
-			System.out.println("-- Updated data between App" + source + " and App" + target);
+			String query = "MATCH (n:APP { id : {source} })-[r]->(m:APP { id : {target} }) SET " + sb.toString();
+			transaction.run(query, Values.parameters( "source", source, "target", target ));
 		}
 	}
 }
