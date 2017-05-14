@@ -39,7 +39,7 @@ public class ClientHandler extends Thread
 	        	{
 	        		timeEnd = System.currentTimeMillis();
 	        		System.out.println("Eventos procesados en este hilo: " + (processed/1000000f) + "M");
-	        		System.out.println("Últimos 100k tomaron: " + ((timeEnd - timeStart)/1000f) + " seg");
+	        		System.out.println("Últimos 100k tomaron: " + ((timeEnd - timeStart)/1000f) + " segundos");
 	        		timeStart = timeEnd;
 	        	}
 	        }

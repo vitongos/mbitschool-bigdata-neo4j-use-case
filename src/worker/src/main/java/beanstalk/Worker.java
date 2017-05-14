@@ -25,31 +25,29 @@ public class Worker
 	    BeanstalkClientFactory factory = new BeanstalkClientFactory(config);
 	    JobConsumer consumer = factory.createJobConsumer("count-tube");
 
-	    Job job = consumer.reserveJob(0);
+	    Driver driver = GraphDatabase.driver( "bolt://localhost" );
+	    Session session = driver.session();
+    	Job job = consumer.reserveJob(0);
 	    // System.out.println("Job Reserved");
 	    Type counterType = new TypeToken<HashMap<Integer, HashMap<Integer, HashMap<String, Integer>>>>() {}.getType();
 	    while (job != null) {
-	    	long startTime = System.nanoTime();
-	    	System.out.println("Consuming Job");
-	    	byte[] bytes = job.getData();
-		    String s = new String(bytes, StandardCharsets.UTF_8);
-		    consumer.deleteJob(job.getId());
-		    // System.out.println("Job Deleted");
-		    
-		    Gson gson = new Gson();
-		    HashMap<Integer, HashMap<Integer, HashMap<String, Integer>>> counterCollection = gson.fromJson(s, counterType);
-		    
-    	    Integer i = 0;
-		    if (counterCollection.size() > 0)
-		    {
-		    	Driver driver = GraphDatabase.driver( "bolt://localhost" );
-		    	try (Session session = driver.session())
-		        {
-		            // Wrapping Cypher in an explicit transaction provides atomicity
-		            // and makes handling errors much easier.
-		            try (Transaction tx = session.beginTransaction())
+	    	try {
+	    		long startTime = System.nanoTime();
+		    	System.out.println("Consuming Job");
+		    	byte[] bytes = job.getData();
+			    String s = new String(bytes, StandardCharsets.UTF_8);
+			    consumer.deleteJob(job.getId());
+			    // System.out.println("Job Deleted");
+			    
+			    Gson gson = new Gson();
+			    HashMap<Integer, HashMap<Integer, HashMap<String, Integer>>> counterCollection = gson.fromJson(s, counterType);
+			    
+	    	    Integer i = 0;
+			    if (counterCollection.size() > 0)
+			    {
+			    	try (Transaction tx = session.beginTransaction())
 		            {
-		            	for (Entry<Integer, HashMap<Integer, HashMap<String, Integer>>> sourceEntry: counterCollection.entrySet())
+			    		for (Entry<Integer, HashMap<Integer, HashMap<String, Integer>>> sourceEntry: counterCollection.entrySet())
 				    	{
 					    	Integer source = sourceEntry.getKey();
 					    	for (Entry<Integer, HashMap<String, Integer>> targetEntry: sourceEntry.getValue().entrySet())
@@ -60,18 +58,30 @@ public class Worker
 					    		i++;
 					    	}
 				    	}
-		                tx.success();
+			    		tx.success();
+			    		System.out.println("Updated " + i + " tuples in " + (System.nanoTime() - startTime)/1000000000f + " seconds");
 		            }
-		        }
-		    	driver.close();
-		    }
-		    System.out.println("Updated " + i + " tuples in Neo4j");
-		    long elapsedTime = System.nanoTime() - startTime;
-		    System.out.println("Job Processed in " + elapsedTime/1000000000 + " seconds");
-		    // System.out.println("Reserving Job");
+			    }
+			    long elapsedTime = System.nanoTime() - startTime;
+			    System.out.println("Job Processed in " + elapsedTime/1000000000f + " seconds");
+	    	}
+	    	catch (Exception exception) {
+	    		if (session == null) {
+	    			session = driver.session();
+	    		}
+	    		else {
+	    			if (session.isOpen()) {
+	    				session.close();
+	    				session = driver.session();
+	    			}
+	    		}
+	    	}
+	    	// System.out.println("Reserving Job");
 			job = consumer.reserveJob(0);
 		    // System.out.println("Job Reserved");
 	    }
+	    session.close();
+    	driver.close();
 	    consumer.close();
 	    System.out.println("Terminated");
 	}
