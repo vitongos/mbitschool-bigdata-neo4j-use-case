@@ -9,7 +9,7 @@ public class ClientHandler extends Thread
 	private Socket conn;
 	private long processed = 0;
 	private static int MIN = 1;
-	private static int MAX = 100;
+	private static int MAX = 30;
     
 	ClientHandler(Socket conn)
     {
