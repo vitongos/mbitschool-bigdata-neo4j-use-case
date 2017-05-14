@@ -69,7 +69,7 @@ eclipse &
 
 Importar al Eclipse los 5 proyectos dentro del directorio **src**.
 
-Configurar el Build Path de cada proyecto para que apunte al JRE de Java 8 (por ejemplo al de OpenJDK).
+Configurar el Build Path de cada proyecto para que apunte al JDK de Java 8 (por ejemplo al de OpenJDK).
 
 Compilar el cliente de beanstalkd sin ejecutar los tests:
 - Clic derecho en **com.dinstone.beanstalkc**
@@ -78,7 +78,7 @@ Compilar el cliente de beanstalkd sin ejecutar los tests:
 - Como *Goals* indicar *clean install package*
 - Run
 
-A continuación, compilar los otros cuatro proyectos:
+A continuación, compilar los proyectos **beanstalk**, **spark**, **storm**:
 - *Run as... > Maven build...*
 - Como *Goals* indicar *clean install package*
 - Run
