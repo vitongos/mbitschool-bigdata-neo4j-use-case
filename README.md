@@ -69,7 +69,7 @@ eclipse &
 
 Importar al Eclipse los 5 proyectos dentro del directorio **src**.
 
-Configurar el Build Path de cada proyecto para que apunte al JRE de Java 8: */opt/jdk1.8.0_112/*.
+Configurar el Build Path de cada proyecto para que apunte al JRE de Java 8 (por ejemplo al de OpenJDK).
 
 Compilar el cliente de beanstalkd sin ejecutar los tests:
 - Clic derecho en **com.dinstone.beanstalkc**
