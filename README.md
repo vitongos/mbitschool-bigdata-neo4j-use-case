@@ -19,43 +19,16 @@ chmod +x use-case-src/deploy/*.sh
 chown centos:centos /opt -R
 ```
 
-### Instalar Eclipse
+### Instalar Paquetes
 Ejecutar el siguiente script:
 ```bash
 cd ~/use-case-src/
-deploy/eclipse.sh
-```
-
-### Instalar Storm
-Ejecutar el siguiente script:
-```bash
-cd ~/use-case-src/
-deploy/storm.sh
-```
-
-### Instalar Beanstalkd
-Ejecutar el siguiente script:
-```bash
-cd ~/use-case-src/
-deploy/beanstalkd.sh
-```
-
-### Instalar Memcached
-Ejecutar el siguiente script:
-```bash
-cd ~/use-case-src/
-deploy/memcached.sh
-```
-
-### Compilar los proyectos
-Ejecutar el Eclipse desde una consola:
-```bash
-eclipse &
+deploy/all.sh
 ```
 
 Importar al Eclipse los 5 proyectos dentro del directorio **src**.
 
-Configurar el Build Path de cada proyecto para que apunte al JDK de Java 8 (por ejemplo al de OpenJDK).
+Si fuera necesario: configurar el Build Path de cada proyecto para que apunte al JDK de Java 8 (por ejemplo al de OpenJDK).
 
 Compilar el cliente de beanstalkd sin ejecutar los tests:
 - Clic derecho en **com.dinstone.beanstalkc**
