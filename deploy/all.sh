@@ -1,5 +1,6 @@
 #!/bin/bash
 
+sed -i -r 's/#dbms\.shell\.enabled=true/dbms\.shell\.enabled=true/' /etc/neo4j/neo4j.conf
 cd ~/use-case-src/
 deploy/eclipse.sh
 cd ~/use-case-src/
