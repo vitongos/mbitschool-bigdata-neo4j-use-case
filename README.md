@@ -47,12 +47,6 @@ cd ~/use-case-src/
 deploy/memcached.sh
 ```
 
-Ejecutar el siguiente script:
-```bash
-cd ~/use-case-src/
-deploy/neo4j.sh
-```
-
 ### Compilar los proyectos
 Ejecutar el Eclipse desde una consola:
 ```bash
