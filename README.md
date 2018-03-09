@@ -4,7 +4,7 @@ Demos y fuentes del caso de grafos persistidos en Big Data
 Instalación
 -----------
 
-A continuación se especifica el proceso de instalación de los diferentes sistemas necesarios para ejecutar las demos en Centos 7.
+A continuación se especifica el proceso de instalación de los diferentes sistemas necesarios para ejecutar las demos en Centos 7.4.
 Ejecutar los scripts bajo usuario root.
 
 *Importante: ejecutar la máquina virtual con mínimo 4 GB de RAM, 8 GB recomendados*
@@ -17,13 +17,6 @@ cd
 git clone https://github.com/vitongos/mbitschool-bigdata-neo4j-use-case.git use-case-src
 chmod +x use-case-src/deploy/*.sh
 chown centos:centos /opt -R
-```
-
-### Instalar Java 8
-Ejecutar el siguiente script:
-```bash
-cd ~/use-case-src/
-deploy/java8.sh
 ```
 
 ### Instalar Eclipse
@@ -54,7 +47,6 @@ cd ~/use-case-src/
 deploy/memcached.sh
 ```
 
-### Instalar Neo4j
 Ejecutar el siguiente script:
 ```bash
 cd ~/use-case-src/
