@@ -57,7 +57,7 @@ Ejecutar los proyectos como Java Application en el siguiente orden:
 Copiar el jar del cliente de Beanstalkd al directorio de librerías de Storm y ejecutar los proyectos desde 4 consolas de comandos:
 ```bash
 cd ~/use-case-src/
-cp src/com.dinston.beanstalkc/target/beanstalk-client-2.1.0-jar-with-dependencies.jar  /opt/storm/lib/
+cp src/com.dinstone.beanstalkc/target/beanstalk-client-2.1.0-jar-with-dependencies.jar  /opt/storm/lib/
 
 java -cp src/socket/bin socket.MainClass
 
