@@ -1,8 +1,8 @@
 #!/bin/bash
 
-wget http://ftp.fau.de/eclipse/technology/epp/downloads/release/mars/2/eclipse-jee-mars-2-linux-gtk-x86_64.tar.gz
-tar xzf eclipse-jee-mars-2-linux-gtk-x86_64.tar.gz
+wget http://ftp.osuosl.org/pub/eclipse/technology/epp/downloads/release/2018-12/R/eclipse-jee-2018-12-R-linux-gtk-x86_64.tar.gz
+tar xzf eclipse-jee-2018-12-R-linux-gtk-x86_64.tar.gz
 mv eclipse /opt/
 ln -s /opt/eclipse/eclipse /usr/bin/eclipse
-rm eclipse-jee-mars-2-linux-gtk-x86_64.tar.gz
+rm eclipse-jee-2018-12-R-linux-gtk-x86_64.tar.gz
 chown centos:centos /opt/eclipse -R
