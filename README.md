@@ -10,7 +10,7 @@ Ejecutar los scripts bajo usuario root.
 *Importante: ejecutar la máquina virtual con mínimo 4 GB de RAM, 8 GB recomendados*
 
 ### Instalar el repositorio clonándolo de Github:
-Ejecutar el siguiente script bajo:
+Ejecutar el siguiente script bajo usuario root:
 ```bash
 yum -y install git
 cd
