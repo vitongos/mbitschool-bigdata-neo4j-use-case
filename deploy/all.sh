@@ -1,8 +1,9 @@
 #!/bin/bash
 
+yum install -y epel-release
 yum install -y terminator
-sed -i -r 's/#dbms\.shell\.enabled=true/dbms\.shell\.enabled=true/' /etc/neo4j/neo4j.conf
-service neo4j restart
+cd ~/use-case-src/
+deploy/neo4j.sh
 cd ~/use-case-src/
 deploy/eclipse.sh
 cd ~/use-case-src/
